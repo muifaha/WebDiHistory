@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>The City</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/png" href="lib/img/favicon.png" />
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var element = document.getElementById("preloader");
+            element.parentNode.removeChild(element);
+        });
+    </script>
+</head>
+
+<body>
+
+<div id="preloader"></div>
+
+<html lang="en" ng-app="App" ng-controller="RootCtrl">
+
+<head>
+    <link rel="stylesheet" href="lib/css/angular-material.min.css">
+    <link rel="stylesheet" href="lib/css/styles.css">
+    <link rel="stylesheet" href="lib/fonts/material.css"/>
+</head>
+
+<body layout="row" ng-controller="NewsCtrl" ng-cloak>
+
+<div layout="column" class="relative" layout-fill role="main">
+
+    <md-toolbar class="md-whiteframe-z2">
+        <div class="md-toolbar-tools">
+
+            <div flex>
+                <md-button class="md-icon-button" ng-click="goBack()">
+                    <md-icon>arrow_back</md-icon>
+                </md-button>
+            </div>
+
+            <h3>{{pagetitle}}</h3>
+            <div flex layout-align="end center" layout="row">
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="refreshData()">
+                    <md-icon>refresh</md-icon>
+                </md-button>
+
+                <!-- more -->
+                <md-menu md-position-mode="target-right target">
+                    <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+                    <md-menu-content width=3>
+                        <md-menu-item>
+                            <md-button layout-fill md-ink-ripple ng-click="getAndroidApp()">Get Android App</md-button>
+                        </md-menu-item>
+
+                        <md-menu-item>
+                            <md-button layout-fill md-ink-ripple ng-click="aboutDialog()">About</md-button>
+                        </md-menu-item>
+
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+    </md-toolbar>
+
+    <md-content id="main-content" style="background-color:#efefef;" class="fill-parent" when-scrolled="loadMore()">
+        <div layout="column" layout-padding ng-if="!self.loading && news.length != 0">
+            <div layout="row" layout-align="center start">
+                <div flex-xs="100" flex-gt-xs="30" flex-sm="60" flex-gt-sm="40" flex="100">
+                    <md-grid-list md-cols="1" md-row-height="10:5" md-gutter-gt-sm="8px">
+                        <md-grid-tile ng-repeat="n in news" ng-click="detailsNews($event, n)">
+                            <md-card layout-fill layout="column" md-ink-ripple style="cursor:pointer;">
+                                <img ng-src="{{image_path+n.image}}" class="md-card-image bg-dark center-crop" flex>
+                                <md-card-content>
+                                    <span class="md-subhead overflow"><b>{{n.title}}</b></span>
+                                    <span class="md-body-1 overflow subtext-about">{{n.brief_content}}</span>
+                                </md-card-content>
+                            </md-card>
+                        </md-grid-tile>
+                    </md-grid-list>
+                </div>
+            </div>
+        </div>
+
+        <div layout="column" layout-align="center center" ng-if="!loading && load_more" style="padding-bottom: 15px;">
+            <md-progress-circular md-mode="indeterminate" class="md-primary" md-diameter="60px"></md-progress-circular>
+        </div>
+
+        <div layout="column" class="fill-parent" ng-if="!loading && news.length == 0" layout-align="center center">
+            <div layout="column" layout-align="center center" flex="20">
+                <md-icon md-svg-src="lib/img/no_item.svg" style="width:100px;height:100px;"></md-icon>
+                <span class="md-title" style="color:#8B8B8C;">No Item</span>
+            </div>
+        </div>
+
+        <div layout="column" class="fill-parent" ng-if="loading" layout-align="center center">
+            <div layout="column" layout-align="center center" ng-if="news.length == 0" flex="20">
+                <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+                <br>
+                <span class="md-title" style="color:#8B8B8C;">Loading</span>
+            </div>
+        </div>
+    </md-content>
+
+</div>
+
+
+<!-- Angular Material Dependencies -->
+<script src="lib/js/angular.min.js"></script>
+<script src="lib/js/angular-animate.min.js"></script>
+<script src="lib/js/angular-aria.min.js"></script>
+<script src="lib/js/angular-messages.min.js"></script>
+<script src="lib/js/angular-route.min.js"></script>
+<script src="lib/js/angular-cookies.min.js"></script>
+<script src="lib/js/angular-sanitize.min.js"></script>
+<script src="lib/js/angular-material.min.js"></script>
+<script src="lib/js/angular-material-icons.min.js"></script>
+
+</body>
+</html>
+
+<script src="controllers/app.js"></script>
+<script src="controllers/root.js"></script>
+<script src="controllers/services.js"></script>
+<script src="controllers/news/news.js"></script>
+
+</body>
+</html>

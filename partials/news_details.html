@@ -1,0 +1,25 @@
+<md-dialog layout="column" style="width:600px;" aria-label="dialog place" style="margin-right:15px;">
+
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 md-header-title flex class="overflow">{{news.title}}</h2>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content class="autoScroll" style="width:100%;max-height:600px;background-color:#FFFFFF;">
+        <img style="max-height:400px; width: 100%;" class="center-crop bg-dark" ng-src="{{full_image_path}}">
+        <div layout="column">
+            <div layout="row" layout-padding >
+                <md-icon>today</md-icon>
+                <span class="md-body-1 subtext-about" flex>{{news.last_update | date:'MMMM dd yyyy hh:mm'}}</span>
+            </div>
+            <md-divider></md-divider>
+            <div layout-padding>
+                <p ng-bind-html="news.full_content | trustAsHtml"></p>
+            </div>
+        </div>
+    </md-dialog-content>
+</md-dialog>

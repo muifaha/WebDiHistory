@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>The City</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/png" href="lib/img/favicon.png" />
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var element = document.getElementById("preloader");
+            element.parentNode.removeChild(element);
+        });
+    </script>
+</head>
+
+<body>
+
+<div id="preloader"></div>
+
+<html lang="en" ng-app="App" ng-controller="RootCtrl">
+
+<head>
+    <link rel="stylesheet" href="lib/css/angular-material.min.css">
+    <link rel="stylesheet" href="lib/css/styles.css">
+    <link rel="stylesheet" href="lib/fonts/material.css"/>
+</head>
+
+<body layout="row" ng-controller="MapsCtrl" ng-cloak>
+
+<div layout="column" class="relative" layout-fill role="main">
+
+    <md-toolbar class="md-whiteframe-z2">
+        <div class="md-toolbar-tools">
+
+            <div flex>
+                <md-button class="md-icon-button" ng-click="goBack()">
+                    <md-icon>arrow_back</md-icon>
+                </md-button>
+            </div>
+
+            <h3>{{pagetitle}}</h3>
+            <div flex layout-align="end center" layout="row">
+                <span flex></span>
+                <md-menu md-position-mode="target-right target">
+                    <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                        <md-icon>dns</md-icon>
+                    </md-button>
+                    <md-menu-content width=4>
+                        <md-menu-item ng-repeat="menu in all_menu">
+                            <md-button layout-fill md-ink-ripple ng-click="onMenuClick(menu)">{{menu.name}}</md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+    </md-toolbar>
+
+    <md-content style="background-color:#efefef;" class="fill-parent">
+        <div id="googleMap" layout="row" class="fill-parent" ng-hide="loading"></div>
+        <div layout="column" class="fill-parent" layout-align="center center" ng-if="loading">
+            <div layout="column" layout-align="center center" flex="20">
+                <md-progress-linear md-mode="indeterminate" style="width: 80px;"></md-progress-linear><br>
+                <span ng-if="total_place != ''" class="md-title" style="color:#8B8B8C;">Load {{load}} of {{total_place}}</span>
+            </div>
+        </div>
+    </md-content>
+
+</div>
+
+
+<!-- Angular Material Dependencies -->
+<script src="lib/js/angular.min.js"></script>
+<script src="lib/js/angular-animate.min.js"></script>
+<script src="lib/js/angular-aria.min.js"></script>
+<script src="lib/js/angular-messages.min.js"></script>
+<script src="lib/js/angular-route.min.js"></script>
+<script src="lib/js/angular-cookies.min.js"></script>
+<script src="lib/js/angular-sanitize.min.js"></script>
+<script src="lib/js/angular-material.min.js"></script>
+<script src="lib/js/angular-material-icons.min.js"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"></script>
+
+</body>
+</html>
+
+<script src="controllers/app.js"></script>
+<script src="controllers/root.js"></script>
+<script src="controllers/services.js"></script>
+<script src="controllers/maps/maps.js"></script>
+
+</body>
+</html>

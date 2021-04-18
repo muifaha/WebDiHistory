@@ -23,3 +23,8 @@ Route::get('/data', 'UploadController@create')->name('getList');
 Route::get('/edit/{targetId}', 'UploadController@edit')->name('getData');
 Route::post('/edit/{targetId}', 'UploadController@update')->name('getUpdate');
 Route::delete('/delete/{targetId}', 'UploadController@destroy')->name('getDelete');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );

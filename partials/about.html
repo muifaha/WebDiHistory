@@ -1,0 +1,47 @@
+<md-dialog layout="column" style="width:20%;" aria-label="dialog place">
+
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 md-header-title flex>About</h2>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <div layout-padding>
+            <div layout="column" class="fill-parent" layout-align="center center">
+                <div layout="column" layout-align="center center">
+                    <img src="lib/img/app_logo.png" layout-padding>
+                    <span class="md-title">DiHistory</span>
+                </div>
+            </div>
+            <div layout="column" class="fill-parent" layout-align="center center">
+                <span>Web display historical building videos</span>
+            </div>
+
+            <md-divider></md-divider>
+
+            <div layout="column" class="fill-parent">
+                <b class="text-about">Developed by</b>
+                <span class="subtext-about">Netra Media</span>
+            </div>
+
+            <md-divider></md-divider>
+
+            <div layout="column" class="fill-parent">
+                <b class="text-about">Copyright</b>
+                <span class="subtext-about">Copyright © 2021 Netra Media. All right reserved</span>
+            </div>
+
+            <md-divider></md-divider>
+
+            <div layout="column" class="fill-parent" style="cursor:pointer" ng-click="openTermPolicies()">
+                <b class="text-about">Term & Policies</b>
+            </div>
+
+
+        </div>
+    </md-dialog-content>
+</md-dialog>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DiHistory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/png" href="lib/img/favicon.png"/>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var element = document.getElementById("preloader");
+            element.parentNode.removeChild(element);
+        });
+    </script>
+
+</head>
+
+<body>
+
+<div id="preloader"></div>
+
+<html lang="en" ng-app="App" ng-controller="RootCtrl">
+
+<head>
+    <link rel="stylesheet" href="lib/css/angular-material.min.css">
+    <link rel="stylesheet" href="lib/css/styles.css">
+    <link rel="stylesheet" href="lib/fonts/material.css"/>
+</head>
+
+<body layout="row" ng-controller="HomeCtrl" ng-cloak>
+
+<div layout="column" class="relative" layout-fill role="main">
+
+    <md-button ng-if="!search_mode" class="md-fab md-hue-2 md-fab-bottom-right" ng-click="openSearchMode()">
+        <md-icon style="color:white;">search</md-icon>
+    </md-button>
+
+    <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+        <!-- SIDE MENU -->
+        <md-content role="navigation">
+
+            <!-- menu header -->
+            <md-toolbar class="md-tall-navigation">
+                <div layout="column" layout-padding flex>
+                    <div layout="row" flex layout-align="end">
+                        <md-button class="md-fab md-mini" ng-click="openMapPage()">
+                            <md-icon style="color:white;">map</md-icon>
+                        </md-button>
+                        <md-button class="md-fab md-mini" ng-click="aboutDialog()">
+                            <md-icon style="color:white;">settings</md-icon>
+                        </md-button>
+                    </div>
+                    <div layout="column">
+                        <span class="md-body-2">Semarang</span>
+                        <span class="md-caption">Jawa Tengah, Indonesia</span>
+                    </div>
+                </div>
+            </md-toolbar>
+
+            <div ng-repeat="menu in menu_top">
+                <md-list-item ng-click="onMenuClick(menu)">
+                    <md-icon class="md-accent">{{menu.icon}}</md-icon>
+                    <p class="md-body-2">{{menu.name}}</p>
+                </md-list-item>
+            </div>
+            <md-divider></md-divider>
+        </md-content>
+
+
+    </md-sidenav>
+
+    <md-toolbar ng-if="!search_mode" class="md-whiteframe-z2">
+        <div class="md-toolbar-tools">
+            <div flex>
+                <md-button class="md-icon-button" ng-click="toggleLeft()">
+                    <md-icon>menu</md-icon>
+                </md-button>
+            </div>
+            <h3>{{pagetitle}}</h3>
+            <div flex layout="row">
+                <span flex></span>
+
+                <md-button class="md-icon-button" ng-click="refreshData()">
+                    <md-icon>refresh</md-icon>
+                </md-button>
+
+                <!-- more -->
+                <md-menu md-position-mode="target-right target">
+                    <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+                    <md-menu-content width=3>
+                        <md-menu-item>
+                            <md-button layout-fill md-ink-ripple ng-click="aboutDialog()">About</md-button>
+                        </md-menu-item>
+
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar ng-if="search_mode" class="md-whiteframe-z2" md-theme="default-dark">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="closeSearchMode()">
+                <md-icon>arrow_back</md-icon>
+            </md-button>
+            <div flex>
+                <input flex data-ng-model="q" id="search_input" class="search" placeholder="Search Input"
+                       ng-keypress="keypressAction($event, q)">
+            </div>
+            <div layout-align="end center" layout="row">
+                <md-button class="md-icon-button" ng-click="submitSearch($event, q)">
+                    <md-icon>search</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-click="q = null">
+                    <md-icon>clear</md-icon>
+                </md-button>
+            </div>
+        </div>
+    </md-toolbar>
+
+    <md-content id="main-content" style="background-color:#efefef;" class="fill-parent" when-scrolled="loadMore()">
+        <div layout="column" layout-padding ng-if="!self.loading && places.length != 0">
+            <div layout="row" layout-align="center start">
+                <div flex-xs="100" flex-gt-xs="50" flex-sm="70" flex-gt-sm="50" flex="100">
+                    <md-grid-list
+                            md-cols-xs="2" md-cols-sm="2" md-cols-gt-sm="3"
+                            md-row-height="10:11"
+                            md-gutter-xs="8px" md-gutter-sm="8px" md-gutter-gt-sm="8px">
+                        <md-grid-tile ng-repeat="p in places" ng-click="detailsPlace($event, p)">
+                            <md-card layout-fill layout="column" md-ink-ripple style="cursor:pointer;">
+                                <img ng-src="{{image_path+p.image}}" class="md-card-image bg-dark center-crop" flex>
+                                <md-card-content>
+                                    <span class="md-subhead overflow">{{p.name}}</span>
+                                </md-card-content>
+                            </md-card>
+                        </md-grid-tile>
+                    </md-grid-list>
+                </div>
+            </div>
+        </div>
+
+        <div layout="column" layout-align="center center" ng-if="!loading && load_more" style="padding-bottom: 15px;">
+            <md-progress-circular md-mode="indeterminate" class="md-primary" md-diameter="60px"></md-progress-circular>
+        </div>
+
+        <div layout="column" class="fill-parent" ng-if="!loading && places.length == 0" layout-align="center center">
+            <div layout="column" layout-align="center center" flex="20">
+                <md-icon md-svg-src="lib/img/no_item.svg" style="width:100px;height:100px;"></md-icon>
+                <span class="md-title" style="color:#8B8B8C;">Tidak Ada Data</span>
+            </div>
+        </div>
+
+        <div layout="column" class="fill-parent" ng-if="loading" layout-align="center center">
+            <div layout="column" layout-align="center center" ng-if="places.length == 0" flex="20">
+                <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+                <br>
+                <span class="md-title" style="color:#8B8B8C;">Loading</span>
+            </div>
+        </div>
+    </md-content>
+
+</div>
+
+
+<!-- Angular Material Dependencies -->
+<script src="lib/js/angular.min.js"></script>
+<script src="lib/js/angular-animate.min.js"></script>
+<script src="lib/js/angular-aria.min.js"></script>
+<script src="lib/js/angular-messages.min.js"></script>
+<script src="lib/js/angular-route.min.js"></script>
+<script src="lib/js/angular-cookies.min.js"></script>
+<script src="lib/js/angular-sanitize.min.js"></script>
+<script src="lib/js/angular-material.min.js"></script>
+<script src="lib/js/angular-material-icons.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"></script>
+
+</body>
+</html>
+
+<script src="controllers/app.js"></script>
+<script src="controllers/root.js"></script>
+<script src="controllers/services.js"></script>
+<script src="controllers/home/home.js"></script>
+
+</body>
+</html>

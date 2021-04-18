@@ -8,6 +8,6 @@
         <a href="{{ route('getList') }}">Lihat Database</a>
         <a href="http://aws.amazone.com">Lihat Video</a>
         <a href="http://netramedia.id">Netra Media</a>
-        <a href="https://github.com/muifaha">Muif Aha</a>
+        <a href="{{ route('logout') }}">Logout</a>
     </div>
 </div>
